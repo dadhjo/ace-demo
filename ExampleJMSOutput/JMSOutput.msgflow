@@ -7,10 +7,10 @@
     <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/ExampleJMSOutput/icons/full/obj16/JMSOutput.gif"/>
     <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/ExampleJMSOutput/icons/full/obj30/JMSOutput.gif"/>
     <composition>
-      <nodes xmi:type="ComIbmJMSClientOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="486,36" destinationQueueName="jmsexample" locationJndiBindings="file:/C:/JNDI-Directory" connectionFactoryName="exampleqcf">
+      <nodes xmi:type="ComIbmJMSClientOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="701,34" destinationQueueName="jmsexample" locationJndiBindings="file:/C:/JNDI-Directory" connectionFactoryName="exampleqcf">
         <translation xmi:type="utility:ConstantString" string="JMS Output - jmsexample"/>
       </nodes>
-      <nodes xmi:type="ComIbmJMSHeader.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="265,28" jmsHeaderOptions="Add header" jmsDeliveryMode="Non_Persistent" jmsExpiration="0" jmsPriority="4">
+      <nodes xmi:type="ComIbmJMSHeader.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="364,25" jmsHeaderOptions="Add header" jmsDeliveryMode="Non_Persistent" jmsExpiration="0" jmsPriority="4">
         <translation xmi:type="utility:ConstantString" string="JMS Header"/>
       </nodes>
       <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="25,28" URLSpecifier="/JMSOutput">
@@ -19,10 +19,10 @@
       <nodes xmi:type="ComIbmHTTPHeader.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="155,24" httpInputHeader="DeleteHeader">
         <translation xmi:type="utility:ConstantString" string="HTTP Header"/>
       </nodes>
-      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="133,88">
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_8" location="149,179">
         <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
       </nodes>
-      <nodes xmi:type="ComIbmMSLMapping.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="371,32" mappingExpression="msl://{default}#JMSOutput_Mapping">
+      <nodes xmi:type="ComIbmMSLMapping.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="517,34" mappingExpression="msl://{default}#JMSOutput_Mapping">
         <translation xmi:type="utility:ConstantString" string="Mapping"/>
       </nodes>
       <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
