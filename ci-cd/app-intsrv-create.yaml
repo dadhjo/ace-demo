@@ -1,30 +1,30 @@
 apiVersion: appconnect.ibm.com/v1beta1
 kind: IntegrationServer
 metadata:
- name: #(APPLICATION_NAME)#-intsrv
+  name: #(APPLICATION_NAME)#-intsrv
 spec:
- version: #(ACESERVER_TO_DEPLOY_VERSION)#
- pod:
-   containers:
-     runtime:
-       resources:
-         limits:
-           cpu: 300m
-           memory: 300Mi
-         requests:
-           cpu: 300m
-           memory: 300Mi
-       image: image-registry.openshift-image-registry.svc:5000/#(OPENSHIFT_PROJECT)#/#(APPLICATION_NAME)#-image:#(APPLICATION_VERSION)#
- license:
-   accept: true
-   license: #(ACESERVER_LICENSE_CODE)#
-   use: #(ACESERVER_USETYPE)#
- barURL: ''
- adminServerSecure: true
- router:
-   timeout: 120s
- designerFlowsOperationMode: disabled
- service:
-   endpointType: http
- useCommonServices: true
- replicas: 1
+  version: #(ACESERVER_TO_DEPLOY_VERSION)#
+  pod:
+    containers:
+      runtime:
+        resources:
+          limits:
+            cpu: 300m
+            memory: 300Mi
+          requests:
+            cpu: 300m
+            memory: 300Mi
+        image: image-registry.openshift-image-registry.svc:5000/#(OPENSHIFT_PROJECT)#/#(APPLICATION_NAME)#-image:#(APPLICATION_VERSION)#
+  license:
+    accept: true
+    license: #(ACESERVER_LICENSE_CODE)#
+    use: #(ACESERVER_USETYPE)#
+  barURL: ''
+  adminServerSecure: true
+  router:
+    timeout: 120s
+  designerFlowsOperationMode: disabled
+  service:
+    endpointType: https
+  useCommonServices: true
+  replicas: 1
