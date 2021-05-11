@@ -22,5 +22,5 @@ spec:
         name: 'ace-server:#(ACESERVER_TO_DEPLOY_VERSION)#'
         namespace: #(OPENSHIFT_PROJECT)#
       pullSecret:
-        name: #(IBM_ENTITLEMENT_KEY)#
+        name: #(IBM_ENTITLEMENT_KEY_SECRET)#
   triggers: []
