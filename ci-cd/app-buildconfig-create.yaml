@@ -4,7 +4,11 @@ metadata:
  name: #(APPLICATION_NAME)#-bldconf
  namespace: #(OPENSHIFT_PROJECT)#
 spec:
- triggers: []
+ output:
+   to:
+   kind: ImageStreamTag
+   name: '#(APPLICATION_NAME)#-image:#(APPLICATION_VERSION)#'
+   namespace: #(OPENSHIFT_PROJECT)#
  source:
    type: dockerfile
    dockerfile: |
@@ -14,12 +18,9 @@ spec:
    type: Docker
    dockerStrategy:
      from:
-     kind: ImageStreamTag
-     name: 'ace-server:#(ACESERVER_TO_DEPLOY_VERSION)#'
-     namespace: #(OPENSHIFT_PROJECT)#
-   pullSecret: #(IBM_ENTITLEMENT_KEY)#
- output:
-   to:
-   kind: ImageStreamTag
-   name: '#(APPLICATION_NAME)#-image:#(APPLICATION_VERSION)#'
-   namespace: #(OPENSHIFT_PROJECT)#
+       kind: ImageStreamTag
+       name: 'ace-server:#(ACESERVER_TO_DEPLOY_VERSION)#'
+       namespace: #(OPENSHIFT_PROJECT)#
+     pullSecret:
+       name: #(IBM_ENTITLEMENT_KEY)#
+ triggers: []
