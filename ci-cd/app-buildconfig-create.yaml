@@ -1,26 +1,26 @@
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
- name: #(APPLICATION_NAME)#-bldconf
- namespace: #(OPENSHIFT_PROJECT)#
+  name: #(APPLICATION_NAME)#-bldconf
+  namespace: #(OPENSHIFT_PROJECT)#
 spec:
- output:
-   to:
-   kind: ImageStreamTag
-   name: '#(APPLICATION_NAME)#-image:#(APPLICATION_VERSION)#'
-   namespace: #(OPENSHIFT_PROJECT)#
- source:
-   type: dockerfile
-   dockerfile: |
-     FROM ace-server:#(ACESERVER_TO_DEPLOY_VERSION)#
-     COPY *.bar /home/aceuser/initial-config/bars/
- strategy:
-   type: Docker
-   dockerStrategy:
-     from:
-       kind: ImageStreamTag
-       name: 'ace-server:#(ACESERVER_TO_DEPLOY_VERSION)#'
-       namespace: #(OPENSHIFT_PROJECT)#
-     pullSecret:
-       name: #(IBM_ENTITLEMENT_KEY)#
- triggers: []
+  output:
+    to:
+      kind: ImageStreamTag
+      name: '#(APPLICATION_NAME)#-image:#(APPLICATION_VERSION)#'
+      namespace: #(OPENSHIFT_PROJECT)#
+  source:
+    type: dockerfile
+    dockerfile: |
+      FROM ace-server:#(ACESERVER_TO_DEPLOY_VERSION)#
+      COPY *.bar /home/aceuser/initial-config/bars/
+  strategy:
+    type: Docker
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'ace-server:#(ACESERVER_TO_DEPLOY_VERSION)#'
+        namespace: #(OPENSHIFT_PROJECT)#
+      pullSecret:
+        name: #(IBM_ENTITLEMENT_KEY)#
+  triggers: []
