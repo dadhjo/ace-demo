@@ -2,6 +2,7 @@ apiVersion: appconnect.ibm.com/v1beta1
 kind: IntegrationServer
 metadata:
   name: #(APPLICATION_NAME)#-intsrv
+  namespace: #(OPENSHIFT_PROJECT)#
 spec:
   version: #(ACESERVER_TO_DEPLOY_VERSION)#
   pod:
