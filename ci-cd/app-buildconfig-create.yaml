@@ -17,7 +17,7 @@ spec:
      kind: ImageStreamTag
      name: 'ace-server:#(ACESERVER_TO_DEPLOY_VERSION)#'
      namespace: #(OPENSHIFT_PROJECT)#
-   pullSecret: #(SECRET_IBM_ENTITLEMENT_KEY)#
+   pullSecret: #(IBM_ENTITLEMENT_KEY)#
  output:
    to:
    kind: ImageStreamTag
