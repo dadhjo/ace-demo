@@ -1,0 +1,77 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  AGENT_ACE_INSTALL_DIR: '/home/azagent/ace-11.0.0.12/server/bin'
+  AGENT_ACE_TOOLS_DIR: '/home/azagent/ace-11.0.0.12/tools'
+  APPLICATION_NAME: 'app-prueba'
+  OPENSHIFT_PROJECT: 'platnavi'
+  ACESERVER_IMAGE_LOCATION: 'cp.icr.io/cp/appc/ace-server-prod@sha256:8372beb29cd95d0d3de1b6587248e9997e69ef13bc77caffd6ca3f7068d7779a'
+  ACESERVER_TO_DEPLOY_VERSION: '11.0.0.12-r1-eus'
+  OPENSHIFT_PROJECT: 'platnavi'
+
+steps:
+- task: qetza.replacetokens.replacetokens-task.replacetokens@3
+  displayName: 'Replace tokens in ci-cd/*.yaml'
+  inputs:
+    rootDirectory: '$(System.DefaultWorkingDirectory)/_dadhjo_ace-demo/ci-cd'
+    targetFiles: '*.yaml => runtime/*.yaml'
+    verbosity: detailed
+    tokenPrefix: '#('
+    tokenSuffix: ')#'
+
+- bash: |
+   # Write your commands here
+   
+   source $(AGENT_ACE_INSTALL_DIR)/mqsiprofile
+   /usr/bin/xvfb-run $(AGENT_ACE_TOOLS_DIR)/mqsicreatebar -data . -b bars/CustomerDatabaseV1.bar -a CustomerDatabaseV1 -l CustomerDatabaseJava -cleanBuild
+   /usr/bin/xvfb-run $(AGENT_ACE_TOOLS_DIR)/mqsicreatebar -data . -b bars/TemperatureConverter.bar -a TemperatureConverter -cleanBuild
+  workingDirectory: '$(System.DefaultWorkingDirectory)/_dadhjo_ace-demo'
+  failOnStderr: true
+  noProfile: false
+  noRc: false
+  displayName: 'Build BAR Files from repositorie'
+- task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
+  displayName: 'Create ImageStream ace-server'
+  inputs:
+    openshiftService: 'Openshift_Cluster_IBMPublic_cluster-cp4i'
+    cmd: 'apply -f $(System.DefaultWorkingDirectory)/_dadhjo_ace-demo/ci-cd/runtime/ace-server-imgstrm-create.yaml'
+    uselocalOc: true
+- task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
+  displayName: 'Tag ImageStream with ACE Server version'
+  inputs:
+    openshiftService: 'Openshift_Cluster_IBMPublic_cluster-cp4i'
+    cmd: 'tag $(ACESERVER_IMAGE_LOCATION) ace-server:$(ACESERVER_TO_DEPLOY_VERSION) -n $(OPENSHIFT_PROJECT)'
+    uselocalOc: true
+- task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
+  displayName: 'Create Application ImageStream'
+  inputs:
+    openshiftService: 'Openshift_Cluster_IBMPublic_cluster-cp4i'
+    cmd: 'apply -f $(System.DefaultWorkingDirectory)/_dadhjo_ace-demo/ci-cd/runtime/app-imgstrm-create.yaml'
+    uselocalOc: true
+- task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
+  displayName: 'Create Application BuildConfig'
+  inputs:
+    openshiftService: 'Openshift_Cluster_IBMPublic_cluster-cp4i'
+    cmd: 'apply -f $(System.DefaultWorkingDirectory)/_dadhjo_ace-demo/ci-cd/runtime/app-buildconfig-create.yaml'
+    uselocalOc: true
+- task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
+  displayName: 'Start build Application Image '
+  inputs:
+    openshiftService: 'Openshift_Cluster_IBMPublic_cluster-cp4i'
+    cmd: 'start-build $(APPLICATION_NAME)-bldconf --from-dir=$(System.DefaultWorkingDirectory)/_dadhjo_ace-demo/bars --follow -n $(OPENSHIFT_PROJECT)'
+    uselocalOc: true
+- task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
+  displayName: 'Create Application IntegrationServer'
+  inputs:
+    openshiftService: 'Openshift_Cluster_IBMPublic_cluster-cp4i'
+    cmd: 'apply -f $(System.DefaultWorkingDirectory)/_dadhjo_ace-demo/ci-cd/runtime/app-intsrv-create.yaml'
+    uselocalOc: true
