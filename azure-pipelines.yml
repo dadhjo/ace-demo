@@ -16,7 +16,6 @@ variables:
   OPENSHIFT_PROJECT: 'platnavi'
   ACESERVER_IMAGE_LOCATION: 'cp.icr.io/cp/appc/ace-server-prod@sha256:8372beb29cd95d0d3de1b6587248e9997e69ef13bc77caffd6ca3f7068d7779a'
   ACESERVER_TO_DEPLOY_VERSION: '11.0.0.12-r1-eus'
-  OPENSHIFT_PROJECT: 'platnavi'
 
 steps:
 - task: qetza.replacetokens.replacetokens-task.replacetokens@3
