@@ -38,36 +38,42 @@ steps:
   noProfile: false
   noRc: false
   displayName: 'Build BAR Files from repositorie'
+
 - task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
   displayName: 'Create ImageStream ace-server'
   inputs:
     openshiftService: 'Openshift_Cluster_IBMPublic_cluster-cp4i'
     cmd: 'apply -f $(System.DefaultWorkingDirectory)/_dadhjo_ace-demo/ci-cd/runtime/ace-server-imgstrm-create.yaml'
     uselocalOc: true
+
 - task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
   displayName: 'Tag ImageStream with ACE Server version'
   inputs:
     openshiftService: 'Openshift_Cluster_IBMPublic_cluster-cp4i'
     cmd: 'tag $(ACESERVER_IMAGE_LOCATION) ace-server:$(ACESERVER_TO_DEPLOY_VERSION) -n $(OPENSHIFT_PROJECT)'
     uselocalOc: true
+
 - task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
   displayName: 'Create Application ImageStream'
   inputs:
     openshiftService: 'Openshift_Cluster_IBMPublic_cluster-cp4i'
     cmd: 'apply -f $(System.DefaultWorkingDirectory)/_dadhjo_ace-demo/ci-cd/runtime/app-imgstrm-create.yaml'
     uselocalOc: true
+
 - task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
   displayName: 'Create Application BuildConfig'
   inputs:
     openshiftService: 'Openshift_Cluster_IBMPublic_cluster-cp4i'
     cmd: 'apply -f $(System.DefaultWorkingDirectory)/_dadhjo_ace-demo/ci-cd/runtime/app-buildconfig-create.yaml'
     uselocalOc: true
+
 - task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
   displayName: 'Start build Application Image '
   inputs:
     openshiftService: 'Openshift_Cluster_IBMPublic_cluster-cp4i'
     cmd: 'start-build $(APPLICATION_NAME)-bldconf --from-dir=$(System.DefaultWorkingDirectory)/_dadhjo_ace-demo/bars --follow -n $(OPENSHIFT_PROJECT)'
     uselocalOc: true
+
 - task: redhat.openshift-vsts.oc-cmd-task.oc-cmd@2
   displayName: 'Create Application IntegrationServer'
   inputs:
